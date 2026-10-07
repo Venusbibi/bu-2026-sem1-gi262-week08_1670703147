@@ -6,16 +6,18 @@ public class DialogueSequen : MonoBehaviour
 {
     public DialogueTree tree;
     public DialogueNode currentNode;
-    DialogueUI dialogueUI; 
+    DialogueUI dialogueUI;
 
     public void Start()
     {
         // ตรวจสอบ UI และตั้งค่า
         // 1. call LoadConversation() to set up the dialogue tree
-
+        LoadConversations();
+        dialogueUI = GetComponent<NPC>().dialogueUI;
 
         // 2. set the current node to the root of the tree and print its contents
-
+        currentNode = tree.root;
+        currentNode.Print();
     }
 
     private void LoadConversations()
@@ -59,18 +61,21 @@ public class DialogueSequen : MonoBehaviour
         // 4. Build the tree, adding custom responses ...
 
         // [1] add greeting's next node: askForQuest, with text: "Can you give me a quest?"
-
+        greeting.AddNext(askForQuest, "Can you give me a quest?");
         // [2] add greeting's next node: directionsVillage, with text: "Where is the village?" 
-
+        greeting.AddNext(directionsVillage, "Where is the village?");
         // [3] add greeting's next node: directionsForest, with text: "How do I get to the forest?" 
-
+        greeting.AddNext(directionsForest, "How do I get to the forest?");
         // [4] add greeting's next node: goodbye, with text: "Goodbye."
+        greeting.AddNext(goodbye, "Goodbye");
 
-        // [5] add askForQuest's next node: questDenied, with text: "I’m ready for anything!"
-
+        // [5] add askForQuest's next node: questDenied, with text: "questDenied"
+        askForQuest.AddNext(questDenied, "questDenied");
         // [6] add askForQuest's next node: goodbye, with text: "Maybe later."
+        askForQuest.AddNext(goodbye, "Maybe later.");
 
         // 5. Set up the root of the dialogue tree
+        tree = new DialogueTree(greeting);
     }
 
     // **เมธอดใหม่สำหรับรับการเลือกจากปุ่ม UI**
@@ -95,9 +100,8 @@ public class DialogueSequen : MonoBehaviour
                 // ถ้าไม่มีตัวเลือกถัดไป ถือว่าจบบทสนทนา
                 dialogueUI.ShowDialogue(currentNode);   // แสดงข้อความสุดท้าย
                 dialogueUI.ShowCloseButtonDialog();    // อาจเพิ่ม Delay และเรียก dialogueUI.HideDialogue() ที่นี่
-                                                      // หรือทำให้ปุ่ม "ปิด" แสดงขึ้นมา
+                                                       // หรือทำให้ปุ่ม "ปิด" แสดงขึ้นมา
             }
         }
     }
 }
-

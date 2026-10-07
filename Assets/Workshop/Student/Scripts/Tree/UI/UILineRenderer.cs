@@ -17,17 +17,17 @@ public class UILineRenderer : MaskableGraphic
         if (points == null || points.Length < 1)
             return;
 
-        // **จุดเริ่มต้นใหม่:** ใช้ตำแหน่งของ GameObject ที่สคริปต์นี้แนบอยู่
+        // **ยจรยดร รร”รจรยตรฉยนรฃรรรจ:** รฃยชรฉยตร“รกรยนรจยงยขรยง GameObject ยทร•รจรยครร”ยปยตรฌยนร•รฉรกยนยบรรรรจ
         Vector3 startPoint = transform.position;
 
-        // **สร้าง Vertex Template สำหรับ Beveled Edges (ถ้ามี)**
-        // เนื่องจากโครงสร้างการวาดเปลี่ยนไป (จากจุดเดียวไปยังหลายจุด)
-        // Logic การสร้าง Beveled Edges แบบเดิมอาจต้องปรับปรุง
-        // ในโค้ดใหม่นี้ จะวาดเส้นจาก startPoint ไปยังจุดแรกใน points[0]
-        // จากนั้นวาดเส้นระหว่าง points[i] กับ points[i+1] (ถ้ามี) 
+        // **รรรฉร’ยง Vertex Template รร“รรร‘ยบ Beveled Edges (ยถรฉร’รร•)**
+        // ร ยนร—รจรยงยจร’ยกรขยครยงรรรฉร’ยงยกร’รรร’ยดร ยปร…ร•รจรยนรคยป (ยจร’ยกยจรยดร ยดร•รรรคยปรร‘ยงรร…ร’รยจรยด)
+        // Logic ยกร’รรรรฉร’ยง Beveled Edges รกยบยบร ยดร”รรร’ยจยตรฉรยงยปรร‘ยบยปรรยง
+        // รฃยนรขยครฉยดรฃรรรจยนร•รฉ ยจรรร’ยดร รรฉยนยจร’ยก startPoint รคยปรร‘ยงยจรยดรกรยกรฃยน points[0]
+        // ยจร’ยกยนร‘รฉยนรร’ยดร รรฉยนรรรรรจร’ยง points[i] ยกร‘ยบ points[i+1] (ยถรฉร’รร•) 
 
         // *******************************************************************
-        // ********* 1. สร้าง Segment แรก: จาก transform.position ไปยัง points[0] *********
+        // ********* 1. รรรฉร’ยง Segment รกรยก: ยจร’ยก transform.position รคยปรร‘ยง points[0] *********
         // *******************************************************************
         CreateLineSegment(startPoint, points[0].position, vh);
 
@@ -39,30 +39,30 @@ public class UILineRenderer : MaskableGraphic
 
 
         // *******************************************************************
-        // ********* 2. สร้าง Segment ถัดไป: จาก points[i] ไปยัง points[i+1] *********
+        // ********* 2. รรรฉร’ยง Segment ยถร‘ยดรคยป: ยจร’ยก points[i] รคยปรร‘ยง points[i+1] *********
         // *******************************************************************
         for (int i = 0; i < points.Length - 1; i++)
         {
             Vector3 p1 = points[i].position;
             Vector3 p2 = points[i + 1].position;
 
-            // สร้าง segment ระหว่าง points[i] และ points[i+1]
+            // รรรฉร’ยง segment รรรรรจร’ยง points[i] รกร…ร points[i+1]
             CreateLineSegment(p1, p2, vh);
 
-            // คำนวณ Index สำหรับ Segment ใหม่ (เริ่มต้นที่ Segment 1)
-            // Index สำหรับ Segment 1 จะเริ่มต้นที่ vh.currentVertCount ก่อนเรียก CreateLineSegment
-            // เนื่องจาก vh.currentVertCount จะเท่ากับ 5 หลัง Segment แรกถูกสร้าง
+            // ยคร“ยนรยณ Index รร“รรร‘ยบ Segment รฃรรรจ (ร รร”รจรยตรฉยนยทร•รจ Segment 1)
+            // Index รร“รรร‘ยบ Segment 1 ยจรร รร”รจรยตรฉยนยทร•รจ vh.currentVertCount ยกรจรยนร รร•รยก CreateLineSegment
+            // ร ยนร—รจรยงยจร’ยก vh.currentVertCount ยจรร ยทรจร’ยกร‘ยบ 5 รร…ร‘ยง Segment รกรยกยถรยกรรรฉร’ยง
 
-            index = (i + 1) * 5; // Index สำหรับ Segment ที่ i+1 (เริ่มต้นที่ 5, 10, 15, ...)
+            index = (i + 1) * 5; // Index รร“รรร‘ยบ Segment ยทร•รจ i+1 (ร รร”รจรยตรฉยนยทร•รจ 5, 10, 15, ...)
 
             // Add the line segment to the triangles array
             vh.AddTriangle(index, index + 1, index + 3);
             vh.AddTriangle(index + 3, index + 2, index);
 
             // These two triangles create the beveled edges
-            // โค้ดเดิมสำหรับ Beveled Edges ยังคงใช้ได้เพราะมันใช้ index ของ Segment ที่แล้ว (index - 5)
-            // สำหรับ Segment แรก (i=0) จะเชื่อมต่อ Segment 0 กับ Segment 1
-            if (i >= 0) // i = 0 คือ Segment ที่ 1 (เชื่อม Segment 0)
+            // รขยครฉยดร ยดร”รรร“รรร‘ยบ Beveled Edges รร‘ยงยคยงรฃยชรฉรคยดรฉร ยพรร’รรร‘ยนรฃยชรฉ index ยขรยง Segment ยทร•รจรกร…รฉร (index - 5)
+            // รร“รรร‘ยบ Segment รกรยก (i=0) ยจรร ยชร—รจรรยตรจร Segment 0 ยกร‘ยบ Segment 1
+            if (i >= 0) // i = 0 ยคร—ร Segment ยทร•รจ 1 (ร ยชร—รจรร Segment 0)
             {
                 vh.AddTriangle(index, index - 1, index - 3);
                 vh.AddTriangle(index + 1, index - 1, index - 2);
@@ -78,7 +78,7 @@ public class UILineRenderer : MaskableGraphic
     /// <param name="vh">The vertex helper that the segment is added to</param>
     private void CreateLineSegment(Vector3 point1, Vector3 point2, VertexHelper vh)
     {
-        // การทำงานภายในยังคงเหมือนเดิม เพราะจุดประสงค์คือการสร้าง segment จาก 2 จุดที่ให้มา
+        // ยกร’รยทร“ยงร’ยนร€ร’รรฃยนรร‘ยงยคยงร รรร—รยนร ยดร”ร ร ยพรร’รยจรยดยปรรรยงยครฌยคร—รยกร’รรรรฉร’ยง segment ยจร’ยก 2 ยจรยดยทร•รจรฃรรฉรร’
         Vector3 offset = center ? (rectTransform.sizeDelta / 2) : Vector2.zero;
 
         // Create vertex template

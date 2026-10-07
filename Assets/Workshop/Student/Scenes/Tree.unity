@@ -2378,7 +2378,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1e2b8b73cff174f85c85aafc79d5f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueUI: {fileID: 909015994}
+--- !u!114 &1806821598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899118628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a3b2f86b4d51448b882bc5e4aaf820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSequen
 --- !u!1 &1833425496
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,7 +3006,6 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -3244,6 +3254,10 @@ PrefabInstance:
       value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 9025232857560474648, guid: f0158faaeec698c4fa8bd648add0080f, type: 3}
+      propertyPath: sequen
+      value: 
+      objectReference: {fileID: 1806821598}
+    - target: {fileID: 9025232857560474648, guid: f0158faaeec698c4fa8bd648add0080f, type: 3}
       propertyPath: dialogueUI
       value: 
       objectReference: {fileID: 909015994}
@@ -3259,6 +3273,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6944892097304654114, guid: f0158faaeec698c4fa8bd648add0080f, type: 3}
       insertIndex: 2
       addedObject: {fileID: 1806821597}
+    - targetCorrespondingSourceObject: {fileID: 6944892097304654114, guid: f0158faaeec698c4fa8bd648add0080f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1806821598}
   m_SourcePrefab: {fileID: 100100000, guid: f0158faaeec698c4fa8bd648add0080f, type: 3}
 --- !u!1001 &2186379283630356991
 PrefabInstance:

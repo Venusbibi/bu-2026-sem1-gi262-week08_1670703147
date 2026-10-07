@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections; // ��ҧ�ԧ�֧ Namespace �ͧ SkillBook
+using System.Collections; // ÍéÒ§ÍÔ§¶Ö§ Namespace ¢Í§ SkillBook
 
 public class SkillTreeUI : MonoBehaviour
 {
@@ -9,22 +9,22 @@ public class SkillTreeUI : MonoBehaviour
     [Header("Required References")]
     public SkillBook skillBook;
     public SkillNodeUI skillNodePrefab;
-    public Transform skillNodeContainer; // ���˹觷����ҧ Node UI
+    public Transform skillNodeContainer; // µÓáË¹è§·Õè¨ÐÇÒ§ Node UI
 
-    // **��ǹ����������������Ѻ��èѴ��� Scroll View Content**
-    public RectTransform contentSkill; // �ҡ Content RectTransform �ͧ Scroll View �����
+    // **ÊèÇ¹·Õèà¾ÔèÁà¢éÒÁÒÊÓËÃÑº¡ÒÃ¨Ñ´¡ÒÃ Scroll View Content**
+    public RectTransform contentSkill; // ÅÒ¡ Content RectTransform ¢Í§ Scroll View ÁÒãÊè
 
-    // ���������Ѻ�Դ����ͺࢵ�ͧ Skill Node ���١���ҧ
+    // µÑÇá»ÃÊÓËÃÑºµÔ´µÒÁ¢Íºà¢µ¢Í§ Skill Node ·Õè¶Ù¡ÊÃéÒ§
     private float minX = 0f;
     private float maxX = 0f;
     private float minY = 0f;
-    private float maxY = 0f; // ���ͧ�ҡ Y ���繤��ź
+    private float maxY = 0f; // à¹×èÍ§¨Ò¡ Y ¨Ðà»ç¹¤èÒÅº
 
-    // ��˹���Ҵ Node ���������ҧ�������ӹǳ���¢��
+    // ¡ÓË¹´¢¹Ò´ Node áÅÐÃÐÂÐËèÒ§à¾×èÍãËé¤Ó¹Ç³§èÒÂ¢Öé¹
     private readonly float NODE_WIDTH = 150f;
     private readonly float NODE_HEIGHT = 150f;
-    private readonly float X_SPACING = 300f; // ������ҧ��������ҧ Node
-    private readonly float Y_SPACING = 200f; // ������ҧ��������ҧ���
+    private readonly float X_SPACING = 300f; // ÃÐÂÐËèÒ§ÃÇÁÃÐËÇèÒ§ Node
+    private readonly float Y_SPACING = 200f; // ÃÐÂÐËèÒ§ÃÇÁÃÐËÇèÒ§ªÑé¹
 
     private Dictionary<Skill, SkillNodeUI> skillUIMap = new Dictionary<Skill, SkillNodeUI>();
     void Awake()
@@ -38,28 +38,29 @@ public class SkillTreeUI : MonoBehaviour
     {
         if (skillBook == null || contentSkill == null)
         {
-            Debug.LogError("SkillBook ���� ContentSkill reference is missing!");
+            Debug.LogError("SkillBook ËÃ×Í ContentSkill reference is missing!");
             return;
         }
 
         StartCoroutine(DelayShowTree());
 
-    
+
     }
-    IEnumerator DelayShowTree() {
+    IEnumerator DelayShowTree()
+    {
         yield return new WaitForSeconds(0.1f);
-        // ���絢ͺࢵ�������
+        // ÃÕà«çµ¢Íºà¢µàÃÔèÁµé¹
         minX = 0f;
         maxX = 0f;
         minY = 0f;
         maxY = 0f;
-        // ��������ҧ UI Nodes �������ҡ Skill Tree (�����˹�������� 0, 0)
+        // àÃÔèÁÊÃéÒ§ UI Nodes ·Ñé§ËÁ´¨Ò¡ Skill Tree (·ÕèµÓáË¹è§àÃÔèÁµé¹ 0, 0)
         CreateAllSkillNodes(skillBook.attackSkillTree.rootSkill, Vector2.zero);
 
-        // **�ӹǳ��С�˹���Ҵ Content �ͧ Scroll View**
+        // **¤Ó¹Ç³áÅÐ¡ÓË¹´¢¹Ò´ Content ¢Í§ Scroll View**
         CalculateAndSetContentSize();
 
-        // �ѻവ UI �����á
+        // ÍÑ»à´µ UI ¤ÃÑé§áÃ¡
         RefreshAllUI();
     }
 
@@ -67,53 +68,53 @@ public class SkillTreeUI : MonoBehaviour
     {
         if (skillUIMap.Count == 0) return;
 
-        // �ӹǳ�������ҧ: �ҡ�����ش�֧����ش (�ǡ�ͺ��硹���)
-        float contentWidth = (maxX - minX) + NODE_WIDTH + 50f; // +50f ��� Margin
+        // ¤Ó¹Ç³¤ÇÒÁ¡ÇéÒ§: ¨Ò¡«éÒÂÊØ´¶Ö§¢ÇÒÊØ´ (ºÇ¡¢ÍºàÅç¡¹éÍÂ)
+        float contentWidth = (maxX - minX) + NODE_WIDTH + 50f; // +50f ¤×Í Margin
 
-        // �ӹǳ�����٧: �ҡ�ش�٧�ش (0) �֧�ش����ش (minY) (�ǡ�ͺ��硹���)
-        // ���ͧ�ҡ��� minY ���繤��ź ������������ó�
-        float contentHeight = Mathf.Abs(minY) + NODE_HEIGHT + 50f; // +50f ��� Margin
+        // ¤Ó¹Ç³¤ÇÒÁÊÙ§: ¨Ò¡¨Ø´ÊÙ§ÊØ´ (0) ¶Ö§¨Ø´µèÓÊØ´ (minY) (ºÇ¡¢ÍºàÅç¡¹éÍÂ)
+        // à¹×èÍ§¨Ò¡¤èÒ minY ¨Ðà»ç¹¤èÒÅº àÃÒãªé¤èÒÊÑÁºÙÃ³ì
+        float contentHeight = Mathf.Abs(minY) + NODE_HEIGHT + 50f; // +50f ¤×Í Margin
 
-        // ��˹���Ҵ���Ѻ RectTransform �ͧ Content
+        // ¡ÓË¹´¢¹Ò´ãËé¡Ñº RectTransform ¢Í§ Content
         contentSkill.sizeDelta = new Vector2(contentWidth, contentHeight);
 
-        // �����˵�: ����Ѻ Scroll View �ǵ�駷�� Node �١�ҧ�ҡ��ŧ��ҧ (Y ��ź) 
-        // ��õ�駤�� Anchor/Pivot �ͧ contentSkill �� Top-Left (0, 1) 
-        // ��������äӹǳ�����٧�ӧҹ�����ҧ�١��ͧ
+        // ËÁÒÂàËµØ: ÊÓËÃÑº Scroll View á¹ÇµÑé§·Õè Node ¶Ù¡ÇÒ§¨Ò¡º¹Å§ÅèÒ§ (Y à»ç¹Åº) 
+        // ¤ÇÃµÑé§¤èÒ Anchor/Pivot ¢Í§ contentSkill à»ç¹ Top-Left (0, 1) 
+        // à¾×èÍãËé¡ÒÃ¤Ó¹Ç³¤ÇÒÁÊÙ§·Ó§Ò¹ä´éÍÂèÒ§¶Ù¡µéÍ§
     }
 
     /// <summary>
-    /// ǹ����������ҧ Skill Node UI ����ӴѺ���
+    /// Ç¹«éÓà¾×èÍÊÃéÒ§ Skill Node UI µÒÁÅÓ´ÑºªÑé¹
     /// </summary>
     private void CreateAllSkillNodes(Skill currentSkill, Vector2 position)
     {
         if (skillUIMap.ContainsKey(currentSkill)) return;
 
-        // 1. ���ҧ Node UI
+        // 1. ÊÃéÒ§ Node UI
         SkillNodeUI newNode = Instantiate(skillNodePrefab, skillNodeContainer);
         newNode.Initialize(currentSkill);
         skillUIMap.Add(currentSkill, newNode);
 
-        // ��˹����˹�
+        // ¡ÓË¹´µÓáË¹è§
         RectTransform rt = newNode.GetComponent<RectTransform>();
         rt.localPosition = position;
 
-        // 2. �Դ����ͺࢵ�ͧ Node ���١���ҧ���
+        // 2. µÔ´µÒÁ¢Íºà¢µ¢Í§ Node ·Õè¶Ù¡ÊÃéÒ§¢Öé¹
         float nodeHalfWidth = NODE_WIDTH / 2f;
         float nodeHalfHeight = NODE_HEIGHT / 2f;
 
         minX = Mathf.Min(minX, position.x - nodeHalfWidth);
         maxX = Mathf.Max(maxX, position.x + nodeHalfWidth);
-        // ���ͧ�ҡ Y ������ҡ 0 ���Ŵŧ (��ź)
+        // à¹×èÍ§¨Ò¡ Y àÃÔèÁ¨Ò¡ 0 áÅÐÅ´Å§ (à»ç¹Åº)
         minY = Mathf.Min(minY, position.y - nodeHalfHeight);
         maxY = Mathf.Max(maxY, position.y + nodeHalfHeight);
 
 
-        // 3. ���ҧ Node ����Ѻ Skill �Ѵ���ӴѺ��� (�١)
+        // 3. ÊÃéÒ§ Node ÊÓËÃÑº Skill ¶Ñ´ä»ã¹ÅÓ´ÑºªÑé¹ (ÅÙ¡)
 
         int numChildren = currentSkill.nextSkills.Count;
 
-        // �ӹǳ���˹�������鹢ͧ�١���á ������� Node �����������觡�ҧ
+        // ¤Ó¹Ç³µÓáË¹è§àÃÔèÁµé¹¢Í§ÅÙ¡¤¹áÃ¡ à¾×èÍãËé Node ·Ñé§ËÁ´ÍÂÙè¡Öè§¡ÅÒ§
         float totalWidth = (numChildren - 1) * X_SPACING;
         float startX = position.x - (totalWidth / 2f);
 
@@ -121,10 +122,10 @@ public class SkillTreeUI : MonoBehaviour
         {
             Skill nextSkill = currentSkill.nextSkills[i];
 
-            // ���˹��١�Ѵ仨������ҡ startX ��������
+            // µÓáË¹è§ÅÙ¡¶Ñ´ä»¨Ðà¾ÔèÁ¨Ò¡ startX ä»àÃ×èÍÂæ
             Vector2 nextPos = new Vector2(
                 startX + (i * X_SPACING),
-                position.y - Y_SPACING // ŧ�˹�觪��
+                position.y - Y_SPACING // Å§ä»Ë¹Öè§ªÑé¹
             );
 
             CreateAllSkillNodes(nextSkill, nextPos);
@@ -139,10 +140,11 @@ public class SkillTreeUI : MonoBehaviour
         }
     }
 
-    public void CloseUI() { 
+    public void CloseUI()
+    {
         gameObject.SetActive(false);
     }
 
-    // �Ҩ���� Logic ����Ѻ����Ҵ����������� (Lines) �����ҧ Node ������
-    // ��觵�ͧ�� Component �� UILineRenderer ���� UI.Graphic ����˹��ͧ
+    // ÍÒ¨à¾ÔèÁ Logic ÊÓËÃÑº¡ÒÃÇÒ´àÊé¹àª×èÍÁµèÍ (Lines) ÃÐËÇèÒ§ Node ä´é·Õè¹Õè
+    // «Öè§µéÍ§ãªé Component àªè¹ UILineRenderer ËÃ×Í UI.Graphic ·Õè¡ÓË¹´àÍ§
 }
